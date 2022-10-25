@@ -3,7 +3,7 @@ import pickle
 import os
 import sys
 import time
-
+from tqdm import tqdm
 import gym
 from gym import wrappers
 import numpy as np
@@ -159,13 +159,15 @@ class RL_Trainer(object):
 
             # if doing MBPO, train the model free component
             if isinstance(self.agent, MBPOAgent):
-                for _ in range(self.sac_params['n_iter']):
+                print('****** Running Soft Actor Critic: ******')
+                for _ in tqdm(range(self.sac_params['n_iter'])):
                     if self.params['mbpo_rollout_length'] > 0:
                         # TODO(Q6): Collect trajectory of length self.params['mbpo_rollout_length'] from the 
                         # learned dynamics model. Add this trajectory to the correct replay buffer.
                         # HINT: Look at collect_model_trajectory and add_to_replay_buffer from MBPOAgent.
                         # HINT: Use the from_model argument to ensure the paths are added to the correct buffer.
-                        pass
+                        paths = self.agent.collect_model_trajectory(rollout_length=self.params['mbpo_rollout_length'])
+                        self.agent.add_to_replay_buffer(paths, from_model=True)
                     # train the SAC agent
                     self.train_sac_agent()
 

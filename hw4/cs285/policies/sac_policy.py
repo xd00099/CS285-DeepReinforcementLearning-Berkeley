@@ -1,7 +1,7 @@
 from cs285.policies.MLP_policy import MLPPolicy
+from cs285.infrastructure.sac_utils import SquashedNormal
 import torch
 import numpy as np
-from cs285.infrastructure import sac_utils
 from cs285.infrastructure import pytorch_util as ptu
 from torch import nn
 from torch import optim
@@ -35,12 +35,24 @@ class MLPPolicySAC(MLPPolicy):
 
     @property
     def alpha(self):
-        # TODO: get this from previous HW
-        return entropy
+        # TODO: Formulate entropy term
+        return torch.exp(self.log_alpha)
 
     def get_action(self, obs: np.ndarray, sample=True) -> np.ndarray:
-        # TODO: get this from previous HW
-        return action
+        # TODO: return sample from distribution if sampling
+        # if not sampling return the mean of the distribution 
+        if len(obs.shape) > 1:
+            observation = obs
+        else:
+            observation = obs[None]
+
+        observation = ptu.from_numpy(observation)
+        act_dist = self(observation)
+        if sample:
+            action = act_dist.sample()
+        else:
+            action = act_dist.mean
+        return ptu.to_numpy(action)
 
     # This function defines the forward pass of the network.
     # You can return anything you want, but you should be able to differentiate
@@ -48,9 +60,44 @@ class MLPPolicySAC(MLPPolicy):
     # return more flexible objects, such as a
     # `torch.distributions.Distribution` object. It's up to you!
     def forward(self, observation: torch.FloatTensor):
-        # TODO: get this from previous HW
-        return action_distribution
+        # TODO: Implement pass through network, computing logprobs and apply correction for Tanh squashing
 
+        # HINT: 
+        # You will need to clip log values
+        # You will need SquashedNormal from sac_utils file 
+        if self.discrete:
+            logits = self.logits_na(observation)
+            action_distribution = torch.distributions.Categorical(logits=logits)
+            return action_distribution
+            
+        else:
+            std = torch.exp(torch.clamp(self.logstd, *self.log_std_bounds))
+            mean = self.mean_net(observation)
+            action_distribution = SquashedNormal(mean, std)
+
+            return action_distribution
+        
     def update(self, obs, critic):
-        # TODO: get this from previous HW
+        # TODO Update actor network and entropy regularizer
+        # return losses and alpha value
+        obs = ptu.from_numpy(obs)
+        actor_dist = self.forward(obs)
+        action = actor_dist.rsample()
+
+        q1, q2 = critic(obs, action)
+        min_Q = torch.min(q1, q2)
+        action_log_prob = actor_dist.log_prob(action).sum(axis=1, keepdim=True)
+       
+        # actor optimize
+        actor_loss = torch.mean(self.alpha.detach() * action_log_prob - min_Q)
+        self.optimizer.zero_grad()
+        actor_loss.backward()
+        self.optimizer.step()
+
+        # alpha optimize
+        alpha_loss = torch.mean(self.alpha * (-action_log_prob - self.target_entropy).detach())
+        self.log_alpha_optimizer.zero_grad()
+        alpha_loss.backward()
+        self.log_alpha_optimizer.step()
+
         return actor_loss, alpha_loss, self.alpha

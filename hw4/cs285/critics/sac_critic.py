@@ -55,9 +55,27 @@ class SACCritic(nn.Module, BaseCritic):
         )
 
     def forward(self, obs: torch.Tensor, action: torch.Tensor):
-        # TODO: get this from previous HW
-        return values
+        # TODO: return the two q values
+        input = torch.cat((obs, action), 1)
+        q1 = self.Q1(input)
+        q2 = self.Q2(input)
 
+        return q1, q2
+
+    def update(self, ob_no, ac_na, target_q):
+        input = torch.cat((ob_no, ac_na), 1)
+        target_q = target_q.unsqueeze(1).detach()
+        q1_pred = self.Q1(input)
+        q2_pred = self.Q2(input)
+        
+        loss_q1 = self.loss(q1_pred, target_q)
+        loss_q2 = self.loss(q2_pred, target_q)
+        self.optimizer.zero_grad()
+        loss = loss_q1 + loss_q2
+        loss.backward()
+        self.optimizer.step()
+
+        return loss.item()
 
 
         

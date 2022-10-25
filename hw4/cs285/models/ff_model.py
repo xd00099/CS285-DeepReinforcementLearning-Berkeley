@@ -133,8 +133,8 @@ class FFModel(nn.Module, BaseModel):
         # `data_statistics['delta_std']`, which keep track of the mean
         # and standard deviation of the model.
         target = next_observations - observations
-        target_mean = np.mean(target)
-        target_std = np.std(target)
+        target_mean = data_statistics['delta_mean']
+        target_std = data_statistics['delta_std']
         target = normalize(target, target_mean, target_std)
         target = ptu.from_numpy(target)
 

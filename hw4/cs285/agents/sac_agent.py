@@ -1,6 +1,7 @@
 from collections import OrderedDict
-
+import torch
 from cs285.infrastructure.replay_buffer import ReplayBuffer
+from cs285.infrastructure.sac_utils import soft_update_params
 from cs285.infrastructure.utils import *
 from .base_agent import BaseAgent
 import gym
@@ -42,12 +43,62 @@ class SACAgent(BaseAgent):
         self.training_step = 0
         self.replay_buffer = ReplayBuffer(max_size=100000)
 
-    def update_critic(self):
-        # TODO: get this from previous HW  
+    def update_critic(self, ob_no, ac_na, next_ob_no, re_n, terminal_n):
+        # TODO: 
+        # 1. Compute the target Q value. 
+        # HINT: You need to use the entropy term (alpha)
+        # 2. Get current Q estimates and calculate critic loss
+        # 3. Optimize the critic  
+
+        ob_no = ptu.from_numpy(ob_no)
+        ac_na = ptu.from_numpy(ac_na)
+        next_ob_no = ptu.from_numpy(next_ob_no)
+        re_n = ptu.from_numpy(re_n)
+        terminal_n = ptu.from_numpy(terminal_n)
+        alpha = self.actor.alpha.detach()
+
+        # calculate log(pi(a|s_t+1))
+        next_ac_dist = self.actor(next_ob_no)
+        next_ac = next_ac_dist.rsample()
+        ## reason we sum across log_prob: log_prob contains actions log probabilities across action dims
+        ## need to calculate the overall prob by summing, ie. log(p1*p2) = log(p1) + log(p2)
+        next_ac_log_prob = next_ac_dist.log_prob(next_ac).sum(axis=1, keepdim=True).detach()
+        
+        q1_target, q2_target = self.critic_target(next_ob_no, next_ac)
+        min_q_target = torch.min(q1_target, q2_target)
+
+        target_q = re_n + self.gamma * (1-terminal_n) * (min_q_target - alpha * next_ac_log_prob).squeeze()
+        critic_loss = self.critic.update(ob_no, ac_na, target_q)
+
         return critic_loss
 
     def train(self, ob_no, ac_na, re_n, next_ob_no, terminal_n):
-        # TODO: get this from previous HW
+        # TODO 
+        # 1. Implement the following pseudocode:
+        # for agent_params['num_critic_updates_per_agent_update'] steps,
+        #     update the critic
+        for i in range(self.agent_params['num_critic_updates_per_agent_update']):
+            critic_loss = self.update_critic(ob_no, ac_na, next_ob_no, re_n, terminal_n)
+
+        # 2. Softly update the target every critic_target_update_frequency (HINT: look at sac_utils)
+        if self.training_step % self.critic_target_update_frequency == 0:
+            soft_update_params(self.critic, self.critic_target, self.critic_tau)
+
+        # 3. Implement following pseudocode:
+        # If you need to update actor
+        # for agent_params['num_actor_updates_per_agent_update'] steps,
+        #     update the actor
+        if self.training_step % self.actor_update_frequency == 0:
+            for _ in range(self.agent_params['num_actor_updates_per_agent_update']):
+                actor_loss, alpha_loss, alpha = self.actor.update(ob_no, self.critic)
+
+        # 4. gather losses for logging
+        loss = OrderedDict()
+        loss['Critic_Loss'] = critic_loss
+        loss['Actor_Loss'] = actor_loss
+        loss['Alpha_Loss'] = alpha_loss
+        loss['Temperature'] = alpha
+        self.training_step += 1
         return loss
 
     def add_to_replay_buffer(self, paths):

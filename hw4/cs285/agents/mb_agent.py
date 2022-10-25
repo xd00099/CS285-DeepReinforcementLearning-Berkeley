@@ -50,6 +50,7 @@ class MBAgent(BaseAgent):
         re_n = np.array_split(re_n, self.ensemble_size)
         next_ob_no = np.array_split(next_ob_no, self.ensemble_size)
         terminal_n = np.array_split(terminal_n, self.ensemble_size)
+        
         for i in range(self.ensemble_size):
 
             # select which datapoints to use for this model of the ensemble
