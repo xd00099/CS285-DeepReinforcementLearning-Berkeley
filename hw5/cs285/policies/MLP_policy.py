@@ -170,7 +170,12 @@ class MLPPolicyAWAC(MLPPolicy):
             adv_n = ptu.from_numpy(adv_n)
 
         # TODO update the policy network utilizing AWAC update
-
-        actor_loss = None
+        log_prob = self(observations).log_prob(actions)
+        # formula as in pdf:
+        actor_loss = -torch.mean(torch.exp(adv_n/self.lambda_awac)*log_prob)
         
+        self.optimizer.zero_grad()
+        actor_loss.backward()
+        self.optimizer.step()
+
         return actor_loss.item()

@@ -427,3 +427,4 @@ class RL_Trainer(object):
         plt.colorbar()
         plt.title('Predicted Exploration Value')
         self.fig.savefig(filepath('exploration_value'), bbox_inches='tight')
+        

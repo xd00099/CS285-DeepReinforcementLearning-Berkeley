@@ -42,22 +42,21 @@ class RNDModel(nn.Module, BaseExplorationModel):
             init_method=init_method_2
         )
         
+        self.loss = nn.MSELoss()
         self.optimizer = self.optimizer_spec.constructor(
-            self.f.parameters(),
+            self.f_hat.parameters(),
             **self.optimizer_spec.optim_kwargs
         )
 
-        self.learning_rate_scheduler = optim.lr_scheduler.LambdaLR(
-            self.optimizer,
-            self.optimizer_spec.learning_rate_schedule
-        )
+        self.f.to(ptu.device)
+        self.f_hat.to(ptu.device)
 
     def forward(self, ob_no):
         # <DONE>: Get the prediction error for ob_no
         # HINT: Remember to detach the output of self.f!
         f_out = self.f(ob_no).detach()
-        f_hat_out = self.f_hat(ob_no).detach()
-        return torch.norm(f_out - f_hat_out)
+        f_hat_out = self.f_hat(ob_no)
+        return torch.sqrt(torch.mean((f_hat_out - f_out)**2, dim = 1))
 
     def forward_np(self, ob_no):
         ob_no = ptu.from_numpy(ob_no)
