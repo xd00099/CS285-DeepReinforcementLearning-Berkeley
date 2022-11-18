@@ -27,3 +27,32 @@ python cs285/scripts/run_hw5_expl.py --env_name PointmassMedium-v0 --use_rnd --n
 
 python cs285/scripts/run_hw5_expl.py --env_name PointmassHard-v0 --use_rnd --num_exploration_steps=20000 --cql_alpha=0.0 --exp_name q3_hard_dqn --exploit_rew_shift 1 --exploit_rew_scale 100
 python cs285/scripts/run_hw5_expl.py --env_name PointmassHard-v0 --use_rnd --num_exploration_steps=20000 --cql_alpha=1.0 --exp_name q3_hard_cql --exploit_rew_shift 1 --exploit_rew_scale 100
+
+Q4
+python cs285/scripts/run_hw5_awac.py --env_name PointmassEasy-v0 --exp_name q4_awac_easy_unsupervised_lam_0.1 --use_rnd --num_exploration_steps=20000 --unsupervised_exploration --awac_lambda=0.1
+python cs285/scripts/run_hw5_awac.py --env_name PointmassEasy-v0 --exp_name q4_awac_easy_unsupervised_lam_1 --use_rnd --num_exploration_steps=20000 --unsupervised_exploration --awac_lambda=1
+python cs285/scripts/run_hw5_awac.py --env_name PointmassEasy-v0 --exp_name q4_awac_easy_unsupervised_lam_2 --use_rnd --num_exploration_steps=20000 --unsupervised_exploration --awac_lambda=2
+python cs285/scripts/run_hw5_awac.py --env_name PointmassEasy-v0 --exp_name q4_awac_easy_unsupervised_lam_10 --use_rnd --num_exploration_steps=20000 --unsupervised_exploration --awac_lambda=10
+python cs285/scripts/run_hw5_awac.py --env_name PointmassEasy-v0 --exp_name q4_awac_easy_unsupervised_lam_20 --use_rnd --num_exploration_steps=20000 --unsupervised_exploration --awac_lambda=20
+python cs285/scripts/run_hw5_awac.py --env_name PointmassEasy-v0 --exp_name q4_awac_easy_unsupervised_lam_50 --use_rnd --num_exploration_steps=20000 --unsupervised_exploration --awac_lambda=50
+
+python cs285/scripts/run_hw5_awac.py --env_name PointmassEasy-v0 --use_rnd --num_exploration_steps=20000 --awac_lambda=0.1 --exp_name q4_awac_easy_supervised_lam0.1
+python cs285/scripts/run_hw5_awac.py --env_name PointmassEasy-v0 --use_rnd --num_exploration_steps=20000 --awac_lambda=1 --exp_name q4_awac_easy_supervised_lam1
+python cs285/scripts/run_hw5_awac.py --env_name PointmassEasy-v0 --use_rnd --num_exploration_steps=20000 --awac_lambda=2 --exp_name q4_awac_easy_supervised_lam2
+python cs285/scripts/run_hw5_awac.py --env_name PointmassEasy-v0 --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --exp_name q4_awac_easy_supervised_lam10
+python cs285/scripts/run_hw5_awac.py --env_name PointmassEasy-v0 --use_rnd --num_exploration_steps=20000 --awac_lambda=20 --exp_name q4_awac_easy_supervised_lam20
+python cs285/scripts/run_hw5_awac.py --env_name PointmassEasy-v0 --use_rnd --num_exploration_steps=20000 --awac_lambda=50 --exp_name q4_awac_easy_supervised_lam50
+
+python cs285/scripts/run_hw5_awac.py --env_name PointmassMedium-v0 --exp_name q4_awac_medium_unsupervised_lam0.1 --use_rnd --num_exploration_steps=20000 --unsupervised_exploration --awac_lambda=0.1
+python cs285/scripts/run_hw5_awac.py --env_name PointmassMedium-v0 --exp_name q4_awac_medium_unsupervised_lam1 --use_rnd --num_exploration_steps=20000 --unsupervised_exploration --awac_lambda=1
+python cs285/scripts/run_hw5_awac.py --env_name PointmassMedium-v0 --exp_name q4_awac_medium_unsupervised_lam2 --use_rnd --num_exploration_steps=20000 --unsupervised_exploration --awac_lambda=2
+python cs285/scripts/run_hw5_awac.py --env_name PointmassMedium-v0 --exp_name q4_awac_medium_unsupervised_lam10 --use_rnd --num_exploration_steps=20000 --unsupervised_exploration --awac_lambda=10
+python cs285/scripts/run_hw5_awac.py --env_name PointmassMedium-v0 --exp_name q4_awac_medium_unsupervised_lam20 --use_rnd --num_exploration_steps=20000 --unsupervised_exploration --awac_lambda=20
+python cs285/scripts/run_hw5_awac.py --env_name PointmassMedium-v0 --exp_name q4_awac_medium_unsupervised_lam50 --use_rnd --num_exploration_steps=20000 --unsupervised_exploration --awac_lambda=50
+
+python cs285/scripts/run_hw5_awac.py --env_name PointmassMedium-v0 --use_rnd --num_exploration_steps=20000 --awac_lambda=0.1 --exp_name q4_awac_medium_supervised_lam0.1
+python cs285/scripts/run_hw5_awac.py --env_name PointmassMedium-v0 --use_rnd --num_exploration_steps=20000 --awac_lambda=1 --exp_name q4_awac_medium_supervised_lam1  
+python cs285/scripts/run_hw5_awac.py --env_name PointmassMedium-v0 --use_rnd --num_exploration_steps=20000 --awac_lambda=2 --exp_name q4_awac_medium_supervised_lam2  
+python cs285/scripts/run_hw5_awac.py --env_name PointmassMedium-v0 --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --exp_name q4_awac_medium_supervised_lam10
+python cs285/scripts/run_hw5_awac.py --env_name PointmassMedium-v0 --use_rnd --num_exploration_steps=20000 --awac_lambda=20 --exp_name q4_awac_medium_supervised_lam20
+python cs285/scripts/run_hw5_awac.py --env_name PointmassMedium-v0 --use_rnd --num_exploration_steps=20000 --awac_lambda=50 --exp_name q4_awac_medium_supervised_lam50

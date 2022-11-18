@@ -73,6 +73,7 @@ class IQLAgent(DQNAgent):
         if self.t > self.num_exploration_steps:
             # TODO: After exploration is over, set the actor to optimize the extrinsic critic
             #HINT: Look at method ArgMaxPolicy.set_critic
+            self.actor.set_critic(self.exploitation_critic)
 
         if (self.t > self.learning_starts
                 and self.t % self.learning_freq == 0
@@ -81,56 +82,60 @@ class IQLAgent(DQNAgent):
 
             # TODO: Get Reward Weights
             # Get the current explore reward weight and exploit reward weight
-            explore_weight = None
-            exploit_weight = None 
+            explore_weight = self.explore_weight_schedule.value(self.t)
+            exploit_weight = self.exploit_weight_schedule.value(self.t)
 
             # TODO: Run Exploration Model #
             # Evaluate the exploration model on s to get the exploration bonus
             # HINT: Normalize the exploration bonus, as RND values vary highly in magnitude
-            expl_bonus = None
+            expl_bonus = self.exploration_model.forward_np(next_ob_no)
+            expl_bonus = normalize(expl_bonus, expl_bonus.mean(), self.running_rnd_rew_std)
+            self.running_rnd_rew_std = self.rnd_gamma*self.running_rnd_rew_std + (1-self.rnd_gamma) * expl_bonus.std()
+
 
             # TODO: Reward Calculations #
             # Calculate mixed rewards, which will be passed into the exploration critic
             # HINT: See doc for definition of mixed_reward
-            mixed_reward = None
+            mixed_reward = explore_weight*expl_bonus + exploit_weight*re_n
 
             # TODO: Calculate the environment reward
             # HINT: For part 1, env_reward is just 're_n'
             #       After this, env_reward is 're_n' shifted by self.exploit_rew_shift,
             #       and scaled by self.exploit_rew_scale
-            env_reward = None
+            env_reward = (re_n + self.exploit_rew_shift) * self.exploit_rew_scale
 
             # TODO: Update Critics And Exploration Model #
             # 1): Update the exploration model (based off s')
             # 2): Update the exploration critic (based off mixed_reward)
             # 3): a) Update the exploitation critic's Value function
             # 3): b) Update the exploitation critic's Q function (based off env_reward)
-            expl_model_loss = None
-            exploration_critic_loss = None 
-            exploitation_critic_loss = None
-            exploitation_critic_loss.update(TODO)
+            expl_model_loss = self.exploration_model.update(next_ob_no)
+            exploration_critic_loss = self.exploration_critic.update(ob_no,ac_na,next_ob_no,mixed_reward,terminal_n)
+            exploitation_critic_V_loss = self.exploitation_critic.update_v(ob_no, ac_na) 
+            exploitation_critic_Q_loss = self.exploitation_critic.update_q(ob_no, ac_na, next_ob_no, env_reward, terminal_n)
 
 
 
             # TODO: update actor as in AWAC
             # 1): Estimate the advantage
             # 2): Calculate the awac actor loss
-            advantage = None
-            actor_loss = None
+            advantage = self.estimate_advantage(ob_no, ac_na, re_n, next_ob_no, terminal_n)
+            actor_loss = self.awac_actor.update(ob_no, ac_na, advantage)
 
             # TODO: Update Target Networks #
             if self.num_param_updates % self.target_update_freq == 0:
                 #  Update the exploitation and exploration target networks
-                pass
+                self.exploration_critic.update_target_network()
+                self.exploitation_critic.update_target_network()
 
             # Logging #
             log['Exploration Critic Loss'] = exploration_critic_loss['Training Loss']
-            log['Exploitation Critic V Loss'] = exploitation_critic_loss['Training Q Loss']
-            log['Exploitation Critic Q Loss'] = exploitation_critic_loss['Training V Loss']
+            log['Exploitation Critic Q Loss'] = exploitation_critic_Q_loss['Training Q Loss']
+            log['Exploitation Critic V Loss'] = exploitation_critic_V_loss['Training V Loss']
             log['Exploration Model Loss'] = expl_model_loss
 
             # <DONE>: Uncomment these lines after completing awac
-            # log['Actor Loss'] = actor_loss
+            log['Actor Loss'] = actor_loss
 
             self.num_param_updates += 1
 
