@@ -56,3 +56,35 @@ python cs285/scripts/run_hw5_awac.py --env_name PointmassMedium-v0 --use_rnd --n
 python cs285/scripts/run_hw5_awac.py --env_name PointmassMedium-v0 --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --exp_name q4_awac_medium_supervised_lam10
 python cs285/scripts/run_hw5_awac.py --env_name PointmassMedium-v0 --use_rnd --num_exploration_steps=20000 --awac_lambda=20 --exp_name q4_awac_medium_supervised_lam20
 python cs285/scripts/run_hw5_awac.py --env_name PointmassMedium-v0 --use_rnd --num_exploration_steps=20000 --awac_lambda=50 --exp_name q4_awac_medium_supervised_lam50
+
+
+Q5
+
+python cs285/scripts/run_hw5_iql.py --env_name PointmassEasy-v0   --exp_name q5_iql_easy_supervised_lam10_tau0.5                                --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --iql_expectile=0.5
+python cs285/scripts/run_hw5_iql.py --env_name PointmassEasy-v0   --exp_name q5_iql_easy_supervised_lam10_tau0.6                                --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --iql_expectile=0.6
+python cs285/scripts/run_hw5_iql.py --env_name PointmassEasy-v0   --exp_name q5_iql_easy_supervised_lam10_tau0.7                                --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --iql_expectile=0.7
+python cs285/scripts/run_hw5_iql.py --env_name PointmassEasy-v0   --exp_name q5_iql_easy_supervised_lam10_tau0.8                                --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --iql_expectile=0.8
+python cs285/scripts/run_hw5_iql.py --env_name PointmassEasy-v0   --exp_name q5_iql_easy_supervised_lam10_tau0.9                                --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --iql_expectile=0.9
+python cs285/scripts/run_hw5_iql.py --env_name PointmassEasy-v0   --exp_name q5_iql_easy_supervised_lam10_tau0.95                                --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --iql_expectile=0.95
+python cs285/scripts/run_hw5_iql.py --env_name PointmassEasy-v0   --exp_name q5_iql_easy_supervised_lam10_tau0.99                                --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --iql_expectile=0.99
+python cs285/scripts/run_hw5_iql.py --env_name PointmassEasy-v0   --exp_name q5_iql_easy_unsupervised_lam10_tau0.5   --unsupervised_exploration --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --iql_expectile=0.5
+python cs285/scripts/run_hw5_iql.py --env_name PointmassEasy-v0   --exp_name q5_iql_easy_unsupervised_lam10_tau0.6   --unsupervised_exploration --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --iql_expectile=0.6
+python cs285/scripts/run_hw5_iql.py --env_name PointmassEasy-v0   --exp_name q5_iql_easy_unsupervised_lam10_tau0.7   --unsupervised_exploration --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --iql_expectile=0.7
+python cs285/scripts/run_hw5_iql.py --env_name PointmassEasy-v0   --exp_name q5_iql_easy_unsupervised_lam10_tau0.8   --unsupervised_exploration --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --iql_expectile=0.8
+python cs285/scripts/run_hw5_iql.py --env_name PointmassEasy-v0   --exp_name q5_iql_easy_unsupervised_lam10_tau0.9   --unsupervised_exploration --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --iql_expectile=0.9
+python cs285/scripts/run_hw5_iql.py --env_name PointmassEasy-v0   --exp_name q5_iql_easy_unsupervised_lam10_tau0.95   --unsupervised_exploration --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --iql_expectile=0.95
+python cs285/scripts/run_hw5_iql.py --env_name PointmassEasy-v0   --exp_name q5_iql_easy_unsupervised_lam10_tau0.99   --unsupervised_exploration --use_rnd --num_exploration_steps=20000 --awac_lambda=10 --iql_expectile=0.99
+python cs285/scripts/run_hw5_iql.py --env_name PointmassMedium-v0 --exp_name q5_iql_medium_supervised_lam2_tau0.5                              --use_rnd --num_exploration_steps=20000 --awac_lambda=2 --iql_expectile=0.5
+python cs285/scripts/run_hw5_iql.py --env_name PointmassMedium-v0 --exp_name q5_iql_medium_supervised_lam2_tau0.6                              --use_rnd --num_exploration_steps=20000 --awac_lambda=2 --iql_expectile=0.6
+python cs285/scripts/run_hw5_iql.py --env_name PointmassMedium-v0 --exp_name q5_iql_medium_supervised_lam2_tau0.7                              --use_rnd --num_exploration_steps=20000 --awac_lambda=2 --iql_expectile=0.7
+python cs285/scripts/run_hw5_iql.py --env_name PointmassMedium-v0 --exp_name q5_iql_medium_supervised_lam2_tau0.8                              --use_rnd --num_exploration_steps=20000 --awac_lambda=2 --iql_expectile=0.8
+python cs285/scripts/run_hw5_iql.py --env_name PointmassMedium-v0 --exp_name q5_iql_medium_supervised_lam2_tau0.9                              --use_rnd --num_exploration_steps=20000 --awac_lambda=2 --iql_expectile=0.9
+python cs285/scripts/run_hw5_iql.py --env_name PointmassMedium-v0 --exp_name q5_iql_medium_supervised_lam2_tau0.95                              --use_rnd --num_exploration_steps=20000 --awac_lambda=2 --iql_expectile=0.95
+python cs285/scripts/run_hw5_iql.py --env_name PointmassMedium-v0 --exp_name q5_iql_medium_supervised_lam2_tau0.99                              --use_rnd --num_exploration_steps=20000 --awac_lambda=2 --iql_expectile=0.99
+python cs285/scripts/run_hw5_iql.py --env_name PointmassMedium-v0 --exp_name q5_iql_medium_unsupervised_lam0.1_tau0.5 --unsupervised_exploration --use_rnd --num_exploration_steps=20000 --awac_lambda=0.1 --iql_expectile=0.5
+python cs285/scripts/run_hw5_iql.py --env_name PointmassMedium-v0 --exp_name q5_iql_medium_unsupervised_lam0.1_tau0.6 --unsupervised_exploration --use_rnd --num_exploration_steps=20000 --awac_lambda=0.1 --iql_expectile=0.6
+python cs285/scripts/run_hw5_iql.py --env_name PointmassMedium-v0 --exp_name q5_iql_medium_unsupervised_lam0.1_tau0.7 --unsupervised_exploration --use_rnd --num_exploration_steps=20000 --awac_lambda=0.1 --iql_expectile=0.7
+python cs285/scripts/run_hw5_iql.py --env_name PointmassMedium-v0 --exp_name q5_iql_medium_unsupervised_lam0.1_tau0.8 --unsupervised_exploration --use_rnd --num_exploration_steps=20000 --awac_lambda=0.1 --iql_expectile=0.8
+python cs285/scripts/run_hw5_iql.py --env_name PointmassMedium-v0 --exp_name q5_iql_medium_unsupervised_lam0.1_tau0.9 --unsupervised_exploration --use_rnd --num_exploration_steps=20000 --awac_lambda=0.1 --iql_expectile=0.9
+python cs285/scripts/run_hw5_iql.py --env_name PointmassMedium-v0 --exp_name q5_iql_medium_unsupervised_lam0.1_tau0.95 --unsupervised_exploration --use_rnd --num_exploration_steps=20000 --awac_lambda=0.1 --iql_expectile=0.95
+python cs285/scripts/run_hw5_iql.py --env_name PointmassMedium-v0 --exp_name q5_iql_medium_unsupervised_lam0.1_tau0.99 --unsupervised_exploration --use_rnd --num_exploration_steps=20000 --awac_lambda=0.1 --iql_expectile=0.99

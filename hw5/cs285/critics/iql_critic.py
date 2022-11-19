@@ -73,11 +73,13 @@ class IQLCritic(BaseCritic):
         ac_na = ptu.from_numpy(ac_na).to(torch.long)
         
         qa_nt = self.q_net_target(ob_no)
-        q_nt = torch.gather(qa_nt, 1, ac_na.unsqueeze(1)).squeeze(1).detach()
-
+        q_nt = torch.gather(qa_nt, 1, ac_na.unsqueeze(1)).detach()
+        v_nt = self.v_net(ob_no)
 
         ### YOUR CODE HERE ###
-        value_loss = self.expectile_loss(q_nt - self.v_net(ob_no)).mean()
+        assert q_nt.shape == v_nt.shape == (len(ob_no),1)
+        
+        value_loss = self.expectile_loss(q_nt - v_nt).mean()
 
         assert value_loss.shape == ()
         self.v_optimizer.zero_grad()
@@ -102,9 +104,12 @@ class IQLCritic(BaseCritic):
         ### YOUR CODE HERE ###
         v_t_values = self.v_net(next_ob_no).detach()
         qa_t_values = self.q_net(ob_no)
-        q_t_values = torch.gather(qa_t_values, 1, ac_na.unsqueeze(1)).squeeze(1)
+        q_t_values = torch.gather(qa_t_values, 1, ac_na.unsqueeze(1))
+        
+        target_q = reward_n.unsqueeze(1) + self.gamma*v_t_values
 
-        target_q = reward_n + self.gamma*v_t_values
+
+        assert q_t_values.shape == target_q.shape == (len(ob_no),1)
         loss = ((q_t_values - target_q.detach())**2).mean()
         
         assert loss.shape == ()
