@@ -1,3 +1,5 @@
+
+
 # UC Berkeley CS285 Deep Reinforcement Learning  Fall 2022
 My Solutions of Assignments for [Berkeley CS 285: Deep Reinforcement Learning, Decision Making, and Control](http://rail.eecs.berkeley.edu/deeprlcourse/).
 
@@ -31,7 +33,7 @@ Only necessary files are displayed.
         + policies
         + ...
     + report.pdf
-    + requirement.txt
+    + requirements.txt
     + setup.py
     + cs285_hw[num].pdf (hw instructions)
     
@@ -72,4 +74,3 @@ Only necessary files are displayed.
     + Implicit Q-Learning (IQL) Algorithm
 
 ```
-
